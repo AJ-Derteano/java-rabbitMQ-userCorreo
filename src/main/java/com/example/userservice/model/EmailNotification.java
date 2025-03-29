@@ -32,6 +32,19 @@ public class EmailNotification implements Serializable {
         return new EmailNotification(user.getEmail(), subject, body);
     }
 
+    // Create notification for new order
+    public static EmailNotification forNewOrder(Order order, User user) {
+        String subject = "Nuevo pedido creado!";
+        String body = String.format(
+                "Hello,\n\n" +
+                        "Tu pedido #%s ha sido creado exitosamente.\n\n" +
+                        "Saludos,\n" +
+                        "Codigo",
+                order.getOrderNumber());
+
+        return new EmailNotification(user.getEmail(), subject, body);
+    }
+
     // Getters and Setters
     public String getTo() {
         return to;
@@ -60,8 +73,10 @@ public class EmailNotification implements Serializable {
     // equals, hashCode and toString
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         EmailNotification that = (EmailNotification) o;
         return Objects.equals(to, that.to) &&
                 Objects.equals(subject, that.subject) &&

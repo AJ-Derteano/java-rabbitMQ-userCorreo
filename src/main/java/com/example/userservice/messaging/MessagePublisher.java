@@ -52,4 +52,23 @@ public class MessagePublisher {
             logger.info("Email would have been sent to: {}", notification.getTo());
         }
     }
+
+    public void publishOrderNotification(EmailNotification notification) {
+        try {
+            if (rabbitMQAvailable) {
+                logger.info("Sending order notification to queue: {}", notification.getTo());
+                rabbitTemplate.convertAndSend(exchange, routingKey, notification);
+                logger.info("Order notification sent successfully to queue");
+            } else {
+                // Si RabbitMQ no está disponible, simplemente registramos la notificación
+                logger.info("RabbitMQ not available. Would have sent order to: {}", notification.getTo());
+                logger.info("Order Subject: {}", notification.getSubject());
+                logger.info("Order Body: {}", notification.getBody());
+            }
+        } catch (Exception e) {
+            logger.error("Error sending order notification: {}", e.getMessage(), e);
+            // No lanzamos la excepción para evitar que falle toda la operación
+            logger.info("Order would have been sent to: {}", notification.getTo());
+        }
+    }
 }

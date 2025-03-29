@@ -48,7 +48,8 @@ public class UserService {
             // Create email notification
             EmailNotification notification = EmailNotification.forNewUserRegistration(savedUser);
 
-            // Send notification to RabbitMQ (o simplemente registra si RabbitMQ no está disponible)
+            // Send notification to RabbitMQ (o simplemente registra si RabbitMQ no está
+            // disponible)
             messagePublisher.publishEmailNotification(notification);
         } catch (Exception e) {
             // Log the error but don't fail the user creation
